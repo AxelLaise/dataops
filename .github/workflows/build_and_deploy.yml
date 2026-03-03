@@ -10,7 +10,7 @@ env:
   REGION: europe
   SERVICE_NAME: prenoms-api
   TAG: ${{ github.sha }}
-  IMAGE: europe-docker.pkg.dev/ensai-2026/christophe/prenoms-api:${{ env.TAG }}
+  IMAGE: europe-docker.pkg.dev/ensai-2026/christophe/prenoms-api:${{ github.sha }}
 
 jobs:
   build_and_push:
