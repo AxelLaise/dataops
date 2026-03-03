@@ -1,0 +1,38 @@
+name: Build and Deploy
+
+# Trigger
+on:
+  push:
+    branches: [main]
+
+env:
+  PROJECT_ID: ensai-2026
+  REGION: europe
+  SERVICE_NAME: prenoms-api
+  TAG: ${{{ github.sha }}}
+  IMAGE: europe-docker.pkg.dev/ensai-2026/christophe/prenoms-api:${{ env.TAG }}
+
+jobs:
+  build_and_push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Authenticate to GCP
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_JSON_KEY }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Configure Docker
+        run: gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev
+
+      - name: Build and push Docker image
+        run: |
+          cd prenoms
+          docker build -t ${{ env.IMAGE }} .
+          docker push ${{ env.IMAGE }}
