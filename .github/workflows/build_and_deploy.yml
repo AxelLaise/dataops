@@ -9,7 +9,7 @@ env:
   PROJECT_ID: ensai-2026
   REGION: europe
   SERVICE_NAME: prenoms-api
-  TAG: ${{{ github.sha }}}
+  TAG: ${{ github.sha }}
   IMAGE: europe-docker.pkg.dev/ensai-2026/christophe/prenoms-api:${{ env.TAG }}
 
 jobs:
